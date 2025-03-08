@@ -1,22 +1,30 @@
 public class HashObject {
-    public enum state {
-        EMPTY,
-        DELETED,
-        OCCUPIED
-    }
+    
     public int frequencyCount = 0;
     public int probeCount = 0;
     private Object key;
-    static state state;
+    private State state;
+
+    public enum State{
+        EMPTY,
+        OCCUPIED,
+        DELETED
+    }
 
     public HashObject() {
-        state = state.EMPTY;
-        key = null;
+        this.state = State.EMPTY;
+        this.key = null;
+    }
+
+    public HashObject(State state) {
+        this.state = state;
+        this.key = null;
     }
 
     public HashObject(Object key) {
+        this.state = State.OCCUPIED;
         this.key = key;
-        this.state = state.OCCUPIED;
+        
     }
 
     public boolean equals(HashObject obj) {
@@ -27,6 +35,14 @@ public class HashObject {
         }
     }
 
+    public void incrementFrequency() {
+        this.frequencyCount++;
+    }
+
+    public void incrementProbe() {
+        this.probeCount++;
+    }
+
     public String toString() {
         return "";
     }
@@ -34,6 +50,15 @@ public class HashObject {
     public Object getKey() {
         return this.key;
     }
+
+    public State getState() {
+        return this.state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
 
     
 }
