@@ -79,6 +79,14 @@ public abstract class Hashtable {
         this.size--;
     }
 
+    public int h1(Object key) {
+        return positiveMod(key.hashCode(), m);
+    }
+
+    public int h2(Object key) {
+        return (1 + positiveMod(key.hashCode(), m - 2));
+    }
+
     
 
 }

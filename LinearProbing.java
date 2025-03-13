@@ -11,7 +11,7 @@ public class LinearProbing extends Hashtable{
     }
 
     public HashObject search(HashObject obj) {
-        int pos = obj.hashCode();
+        int pos = h1(obj.getKey());
         for (int i = 0; i < getM(); i++) {
             if ((table[pos + i].equals(obj))) {
                 return obj;

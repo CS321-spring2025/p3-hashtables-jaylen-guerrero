@@ -59,6 +59,8 @@ public class HashObject {
         this.state = state;
     }
 
+    
+
 
     
 }
