@@ -12,10 +12,12 @@ public class LinearProbing extends Hashtable{
 
     public HashObject search(HashObject obj) {
         int pos = h1(obj.getKey());
+        int current = 0;
         for (int i = 0; i < getM(); i++) {
-            if ((table[pos + i].equals(obj))) {
-                return obj;
-            } else if ((table[pos + i].getState() == HashObject.State.EMPTY)) {
+            current = (pos + i) % getM();
+            if (table[current] != null && (table[current].equals(obj))) {
+                return table[current];
+            } else if (table[current] != null && (table[current].getState() == HashObject.State.EMPTY)) {
                 return null;
             }
         }
@@ -27,11 +29,12 @@ public class LinearProbing extends Hashtable{
         if (getSize() == table.length) { // Hash table is full
             table = Arrays.copyOf(table, getSize() * 2); // Double Size of hash table
         }
-
+        int current = 0;
         for (int i = 0; i < getM(); i++) {
-            int pos = obj.hashCode();
-            if ((table[pos + i].getState() == HashObject.State.EMPTY) || table[pos + i].getState() == HashObject.State.DELETED) {
-                table[pos + i] = obj;
+            int pos = h1(obj.getKey());
+            current = (pos + i) % getM();
+            if ((table[current].getState() == HashObject.State.EMPTY) || table[current].getState() == HashObject.State.DELETED) {
+                table[current] = obj;
                 incrementSize();
                 return;
             }
