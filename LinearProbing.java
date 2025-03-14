@@ -29,14 +29,14 @@ public class LinearProbing extends Hashtable{
         if (getLoadFactor() > LOAD_FACTOR) { // Hash table is full
             rehashTable();
         }
-        if (search(obj) == obj) { // obj is already in table
-            obj.incrementFrequency();
-            return;
-        }
         int current = 0;
         for (int i = 0; i < getM(); i++) {
             current = (h1(obj.getKey()) + i) % getM();
             obj.incrementProbe();
+            if (table[current].equals(obj)) {
+                table[current].incrementFrequency();
+                return;
+            }
             if (table[current] != null) {
                 if ((table[current].getState() == HashObject.State.EMPTY) || table[current].getState() == HashObject.State.DELETED) {
                     table[current] = obj;

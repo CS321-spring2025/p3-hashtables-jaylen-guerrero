@@ -6,7 +6,7 @@ public class HashtableExperiment {
         HashObject obj1 = new HashObject(91);
         HashObject obj2 = new HashObject(9);
         HashObject obj3 = new HashObject(24);
-        HashObject obj4 = new HashObject(14);
+        HashObject obj4 = new HashObject(9);
         HashObject obj5 = new HashObject(88);
         HashObject obj6 = new HashObject(32);
         HashObject obj7 = new HashObject(9);
