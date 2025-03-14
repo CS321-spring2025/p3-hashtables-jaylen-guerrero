@@ -43,10 +43,6 @@ public class HashObject {
         this.probeCount++;
     }
 
-    public String toString() {
-        return "";
-    }
-
     public Object getKey() {
         return this.key;
     }
@@ -59,7 +55,9 @@ public class HashObject {
         this.state = state;
     }
 
-    
+    public String toString() {
+        return this.key.toString();
+    }
 
 
     

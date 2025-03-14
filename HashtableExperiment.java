@@ -1,12 +1,10 @@
 public class HashtableExperiment {
     public static void main(String[] args) {
-        Hashtable linearHash = new LinearProbing(10);
-        HashObject object1 = new HashObject("Hello");
+        
+        LinearProbing linearTable = new LinearProbing(8);
+        HashObject object1 = new HashObject(1);
+        linearTable.insert(object1);
 
-        if (linearHash.search(object1) == object1) {
-            System.out.println("Object found");
-        } else {
-            System.out.println("Object not found");
-        }
+        linearTable.toString();
     }
 }

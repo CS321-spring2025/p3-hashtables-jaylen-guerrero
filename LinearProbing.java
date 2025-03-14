@@ -1,6 +1,6 @@
-import java.util.Arrays;
-
 public class LinearProbing extends Hashtable{
+
+    final double LOAD_FACTOR = 1;
 
     public LinearProbing() {
         super();
@@ -11,10 +11,10 @@ public class LinearProbing extends Hashtable{
     }
 
     public HashObject search(HashObject obj) {
-        int pos = h1(obj.getKey());
+        // int pos = h1(obj.getKey());
         int current = 0;
         for (int i = 0; i < getM(); i++) {
-            current = (pos + i) % getM();
+            current = (h1(obj.getKey()) + i) % getM();
             if (table[current] != null && (table[current].equals(obj))) {
                 return table[current];
             } else if (table[current] != null && (table[current].getState() == HashObject.State.EMPTY)) {
@@ -26,33 +26,71 @@ public class LinearProbing extends Hashtable{
     }
 
     public void insert(HashObject obj) {
-        if (getSize() == table.length) { // Hash table is full
-            table = Arrays.copyOf(table, getSize() * 2); // Double Size of hash table
+        if (getLoadFactor() > LOAD_FACTOR) { // Hash table is full
+            rehashTable();
         }
         int current = 0;
         for (int i = 0; i < getM(); i++) {
-            int pos = h1(obj.getKey());
-            current = (pos + i) % getM();
-            if ((table[current].getState() == HashObject.State.EMPTY) || table[current].getState() == HashObject.State.DELETED) {
-                table[current] = obj;
-                incrementSize();
-                return;
+            current = (h1(obj.getKey()) + i) % getM();
+            if (table[current] != null) {
+                if ((table[current].getState() == HashObject.State.EMPTY) || table[current].getState() == HashObject.State.DELETED) {
+                    table[current] = obj;
+                    table[current].setState(HashObject.State.OCCUPIED);
+                    incrementSize();
+                    return;
+                }
             }
         }
     } 
+
+    private void rehashTable() {
+        HashObject[] newTable = new HashObject[table.length * 2];
+        int current;
+        for (int i = 0; i < table.length; i++) {
+            if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
+                for (int j = 0; j < newTable.length; j++) {
+                    current = (h1(table[i].getKey()) + j) % (newTable.length);
+                    if (newTable[current] == null ) {
+                        newTable[current] = table[i];
+                        newTable[current].setState(HashObject.State.OCCUPIED);
+                        break;
+                    }
+                }
+                
+            }
+        }
+        table = newTable;
+        setM(newTable.length);
+        
+    }
     
     public void delete(HashObject obj) {
-        int pos = obj.hashCode();
-        if (search(obj).equals(obj)) { // Object is in hash table
+        int pos = h1(obj.getKey());
+        int current = 0;
+        if (search(obj) != null) { // Object is in hash table
             for (int i = 0; i < getM(); i++) {
-                if (table[pos + i].equals(obj)) {
-                    table[pos + i] = null;
-                    table[pos + i] = new HashObject(HashObject.State.DELETED);
+                current = (pos + i) % getM();
+                if (table[current] != null && table[current].equals(obj)) {
+                    // table[current] = null;
+                    table[current].setState(HashObject.State.DELETED);
                     decrementSize();
+                    return;
                 }
 
             }
         }
+    }
+
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < getM(); i++) {
+            if (table[i] != null) {
+                s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\n");
+            } else {
+                s.concat("Index: " + i + "\tValue: null\n");
+            }
+        }
+        return s;
     }
 
 }

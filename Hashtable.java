@@ -15,8 +15,8 @@ public abstract class Hashtable {
         }
     }
 
-    public Hashtable(int size) {
-        this.table = new HashObject[size];
+    public Hashtable(int m) {
+        this.table = new HashObject[m];
         this.m = table.length;
         for (int i = 0; i < m; i++) {
             table[i] = new HashObject();
@@ -24,7 +24,7 @@ public abstract class Hashtable {
     }
 
     public HashObject search(HashObject obj) {
-        if (table[obj.hashCode()].equals(obj)) {
+        if (table[h1(obj.getKey())].equals(obj)) {
             return obj;
         } else {
             return null;
@@ -36,14 +36,13 @@ public abstract class Hashtable {
             table = Arrays.copyOf(table, size*2);
             m = table.length;
         }
-        table[obj.hashCode()] = obj;
+        table[h1(obj.getKey())] = obj;
         incrementSize();
     }
 
     public void delete(HashObject obj) {
-        int pos = obj.hashCode();
+        int pos = h1(obj.getKey());
         if (search(obj) != null) {
-            table[pos] = null;
             table[pos] = new HashObject(HashObject.State.DELETED);
             decrementSize();
         }
@@ -69,6 +68,10 @@ public abstract class Hashtable {
 
     public int getM() {
         return m;
+    }
+
+    public void setM(int newM) {
+        this.m = newM;
     }
 
     public void incrementSize() {
