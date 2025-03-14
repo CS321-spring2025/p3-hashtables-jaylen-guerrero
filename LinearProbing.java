@@ -84,10 +84,10 @@ public class LinearProbing extends Hashtable{
     public String toString() {
         String s = "";
         for (int i = 0; i < getM(); i++) {
-            if (table[i] != null) {
-                s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\n");
+            if (table[i].getState() != HashObject.State.DELETED || table[i].getState() != HashObject.State.EMPTY) {
+                s = s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\n");
             } else {
-                s.concat("Index: " + i + "\tValue: null\n");
+                s = s.concat("Index: " + i + "\tValue: null\n");
             }
         }
         return s;
