@@ -32,6 +32,7 @@ public class LinearProbing extends Hashtable{
             obj.incrementProbe();
             if (table[current] != null && table[current].equals(obj)) {
                 table[current].incrementFrequency();
+                incrementDupe();
                 return;
             }
             if (table[current] != null) {
@@ -97,6 +98,13 @@ public class LinearProbing extends Hashtable{
         }
     }
 
-    
+    public void debug0() {
+        calcProbes();
+        System.out.println("\tUsing Linear Probing");
+        System.out.println("HashtableExperiment: size of hash table is " + getM());
+        System.out.println("\tInserted " + getSize() + " elements, of which " +  getDupes() + " were duplicates");
+        System.out.println("\tAvg. no. of probes = " + format.format((1.0 * getProbeCount())/getSize()));
+
+    }
 
 }

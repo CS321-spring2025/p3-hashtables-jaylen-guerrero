@@ -8,7 +8,7 @@ public class HashtableExperiment {
 
     final static int MAX_ELEMENTS = 100;
     TwinPrimeGenerator primeGen = new TwinPrimeGenerator();
-    static int m = TwinPrimeGenerator.generateTwinPrime(95500, 96000);
+    static int m = 160;//TwinPrimeGenerator.generateTwinPrime(95500, 96000);
     static LinearProbing linear = new LinearProbing(m);
     static DoubleHashing doubleHash = new DoubleHashing(m);
     public static void printUsage() {
@@ -24,14 +24,17 @@ public class HashtableExperiment {
 
     public static void dataSource(int source, long seed) {
         Random gen = new Random(seed);
-        int amount = gen.nextInt(MAX_ELEMENTS);
-        HashObject obj;
+        int amount = MAX_ELEMENTS;//gen.nextInt(MAX_ELEMENTS);
+        HashObject obj, dobj;
+        int cur;
         
         if (source == 1) { //  data source 1
             for (int i = 0; i < amount; i++) {
-                obj = new HashObject(gen.nextInt());
+                cur = gen.nextInt();
+                dobj = new HashObject(cur);
+                obj = new HashObject(cur);
                 linear.insert(obj);
-                doubleHash.insert(obj);
+                doubleHash.insert(dobj);
             }
 
         } else if (source == 2) { // data source 2
@@ -40,17 +43,21 @@ public class HashtableExperiment {
                 current += 1000;
                 Date date = new Date(current);
                 obj = new HashObject(date);
+                dobj = new HashObject(date);
                 linear.insert(obj);
-                doubleHash.insert(obj);
+                doubleHash.insert(dobj);
             }
 
         } else { // data source 3
             String filePath = "word-list.txt";
+            String curString;
             try (Scanner scan = new Scanner(new File(filePath))) {
                 for (int i = 0; i < amount; i++) {
-                    obj = new HashObject(scan.next());
+                    curString = scan.next();
+                    obj = new HashObject(curString);
+                    dobj = new HashObject(curString);
                     linear.insert(obj);
-                    doubleHash.insert(obj);
+                    doubleHash.insert(dobj);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -63,7 +70,7 @@ public class HashtableExperiment {
     }
 
     public static void dataSource(int source) {
-        dataSource(source, 0);
+        dataSource(source, System.currentTimeMillis());
     }
 
     public static void main(String[] args) {
@@ -90,9 +97,14 @@ public class HashtableExperiment {
             System.exit(1);
         }
 
+        linear.setTargetLoadFactor(loadFactor);
+        doubleHash.setTargetLoadFactor(loadFactor);
+
         dataSource(dataSource, 0);
 
-        linear.toString();
+        linear.debug0();
+        System.out.println();
+        doubleHash.debug0();
 
     }
 }

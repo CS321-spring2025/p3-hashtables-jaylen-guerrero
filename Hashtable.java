@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 public abstract class Hashtable {
     
 
@@ -6,6 +7,9 @@ public abstract class Hashtable {
     private int m;
     private double loadFactor;
     private double loadFactorTarget = 1;
+    private int totDupes = 0;
+    private int totProbeCount = 0;
+    DecimalFormat format = new DecimalFormat(".##");
 
     public Hashtable() {
         this.table = new HashObject[10];
@@ -71,6 +75,14 @@ public abstract class Hashtable {
         return positiveMod(key.hashCode(), m);
     }
 
+    public void incrementDupe() {
+        totDupes++;
+    }
+
+    public int getDupes() {
+        return totDupes;
+    }
+
     public int h2(Object key) {
         return (1 + (positiveMod(key.hashCode(), (m - 2))));
     }
@@ -83,8 +95,21 @@ public abstract class Hashtable {
         return loadFactorTarget;
     }
 
+    public void calcProbes() {
+        totProbeCount = 0;
+        for (int i = 0; i < getM(); i++) {
+            if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
+                totProbeCount += table[i].probeCount;
+            }
+        }
+    }
+
+    public int getProbeCount() {
+        return totProbeCount;
+    }
+
     public String toString() {
-        int totProbeCount = 0;
+        
         String s = "";
         for (int i = 0; i < getM(); i++) {
             if (table[i] != null) {
@@ -102,6 +127,8 @@ public abstract class Hashtable {
             s = s.concat("\nTotal probes: " + totProbeCount + "\tTotal collisions: " + (totProbeCount - getSize()));
         return s;
     }
+
+    
 
 }
 

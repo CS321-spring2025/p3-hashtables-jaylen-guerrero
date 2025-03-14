@@ -88,6 +88,15 @@ public class DoubleHashing  extends Hashtable{
         table = newTable;
     }
 
+    public void debug0() {
+        calcProbes();
+        System.out.println("\tUsing Double Hashing");
+        System.out.println("HashtableExperiment: size of hash table is " + getM());
+        System.out.println("\tInserted " + getSize() + " elements, of which " +  getDupes() + " were duplicates");
+        System.out.println("\tAvg. no. of probes = " + format.format((1.0 * getProbeCount())/getSize()));
+
+    }
+
     
     
 }
