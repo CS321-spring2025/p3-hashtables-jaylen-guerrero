@@ -1,6 +1,6 @@
 public class LinearProbing extends Hashtable{
 
-    final double LOAD_FACTOR = 1;
+    private double loadFactorTarget = 1;
 
     public LinearProbing() {
         super();
@@ -26,7 +26,7 @@ public class LinearProbing extends Hashtable{
     }
 
     public void insert(HashObject obj) {
-        if (getLoadFactor() >= LOAD_FACTOR) { // Hash table is full
+        if (getLoadFactor() >= loadFactorTarget) { // Hash table is full
             rehashTable();
         }
         int current = 0;
@@ -79,6 +79,10 @@ public class LinearProbing extends Hashtable{
         
         
     }
+
+    public void setTargetLoadFactor(double lf) {
+        this.loadFactorTarget = lf;
+    }
     
     public void delete(HashObject obj) {
         int pos = h1(obj.getKey());
@@ -95,23 +99,6 @@ public class LinearProbing extends Hashtable{
 
             }
         }
-    }
-
-    public String toString() {
-        String s = "";
-        for (int i = 0; i < getM(); i++) {
-            if (table[i] != null) {
-                if (table[i].getState() != HashObject.State.DELETED || table[i].getState() != HashObject.State.EMPTY) {
-                    s = s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\tProbe count: " + table[i].probeCount + "\tFrequency Count: " + table[i].frequencyCount + "\n");
-                } else {
-                    s = s.concat("Index: " + i + "\tValue: null\n");
-                }
-            } else {
-                s = s.concat("Index: " + i + "\tValue: null\n");
-            }
-            
-            }
-        return s;
     }
 
 }

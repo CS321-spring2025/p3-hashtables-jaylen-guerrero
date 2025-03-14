@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public abstract class Hashtable {
     
 
@@ -24,31 +22,11 @@ public abstract class Hashtable {
         }
     }
 
-    public HashObject search(HashObject obj) {
-        if (table[h1(obj.getKey())].equals(obj)) {
-            return obj;
-        } else {
-            return null;
-        }
-    }
+    public abstract HashObject search(HashObject obj);
 
-    public void insert(HashObject obj) {
-        if (table.length == size) {
-            table = Arrays.copyOf(table, size*2);
-            m = table.length;
-        }
-        table[h1(obj.getKey())] = obj;
-        incrementSize();
-    }
+    public abstract void insert(HashObject obj);
 
-    public void delete(HashObject obj) {
-        int pos = h1(obj.getKey());
-        if (search(obj) != null) {
-            table[pos] = new HashObject(HashObject.State.DELETED);
-            decrementSize();
-        }
-
-    }
+    public abstract void delete(HashObject obj);
 
 
     protected int positiveMod (int dividend, int divisor) {
@@ -92,6 +70,23 @@ public abstract class Hashtable {
         return (1 + positiveMod(key.hashCode(), m - 2));
     }
 
-    
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < getM(); i++) {
+            if (table[i] != null) {
+                if (table[i].getState() != HashObject.State.DELETED || table[i].getState() != HashObject.State.EMPTY) {
+                    s = s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\tProbe count: " + table[i].probeCount + "\tFrequency Count: " + table[i].frequencyCount + "\n");
+                } else {
+                    s = s.concat("Index: " + i + "\tValue: null\n");
+                }
+            } else {
+                s = s.concat("Index: " + i + "\tValue: null\n");
+            }
+            
+            }
+        return s;
+    }
 
 }
+
+
