@@ -57,11 +57,12 @@ public class LinearProbing extends Hashtable{
         for (int i = 0; i < table.length; i++) {
                 if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
                     for (int j = 0; j < newTable.length; j++) {
-                        current = (h1(table[i].getKey()) + j) % (newTable.length);
+                        current = (h1(table[i].getKey()) + j) % (getM());
                         if (!(newTable[current].equals(table[i]))) { // if obj is already in new table
                             if (newTable[current].getState() == HashObject.State.EMPTY || newTable[current].getState() == HashObject.State.DELETED) {
                                 newTable[current] = table[i];
                                 newTable[current].setState(HashObject.State.OCCUPIED);
+                                // incrementSize();
                                 break;
                             }
                         } else {
@@ -95,5 +96,7 @@ public class LinearProbing extends Hashtable{
             }
         }
     }
+
+    
 
 }

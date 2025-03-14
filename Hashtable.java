@@ -59,6 +59,10 @@ public abstract class Hashtable {
         this.size++;
     }
 
+    public void resetSize() {
+        this.size = 0;
+    }
+
     public void decrementSize() {
         this.size--;
     }
@@ -68,7 +72,7 @@ public abstract class Hashtable {
     }
 
     public int h2(Object key) {
-        return (1 + positiveMod(key.hashCode(), m - 2));
+        return (1 + (positiveMod(key.hashCode(), (m - 2))));
     }
 
     public void setTargetLoadFactor(double lf) {
@@ -80,6 +84,7 @@ public abstract class Hashtable {
     }
 
     public String toString() {
+        int totProbeCount = 0;
         String s = "";
         for (int i = 0; i < getM(); i++) {
             if (table[i] != null) {
@@ -88,11 +93,13 @@ public abstract class Hashtable {
                 } else {
                     s = s.concat("Index: " + i + "\tValue: null\n");
                 }
+                totProbeCount += table[i].probeCount;
             } else {
                 s = s.concat("Index: " + i + "\tValue: null\n");
             }
             
             }
+            s = s.concat("\nTotal probes: " + totProbeCount + "\tTotal collisions: " + (totProbeCount - getSize()));
         return s;
     }
 
