@@ -9,7 +9,7 @@ public class HashtableExperiment {
         HashObject obj4 = new HashObject(14);
         HashObject obj5 = new HashObject(88);
         HashObject obj6 = new HashObject(32);
-        HashObject obj7 = new HashObject(55);
+        HashObject obj7 = new HashObject(9);
 
         linearTable.insert(obj0);
         linearTable.insert(obj1);
