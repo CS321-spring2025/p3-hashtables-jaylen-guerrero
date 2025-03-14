@@ -10,6 +10,9 @@ public class HashtableExperiment {
         HashObject obj5 = new HashObject(88);
         HashObject obj6 = new HashObject(32);
         HashObject obj7 = new HashObject(9);
+        HashObject obj8 = new HashObject(69);
+        HashObject obj9 = new HashObject(64);
+        HashObject obj10 = new HashObject(44);
 
         linearTable.insert(obj0);
         linearTable.insert(obj1);
@@ -19,6 +22,12 @@ public class HashtableExperiment {
         linearTable.insert(obj5);
         linearTable.insert(obj6);
         linearTable.insert(obj7);
+        linearTable.insert(obj8);
+        linearTable.insert(obj9);
+        linearTable.insert(obj10);
+
+        linearTable.delete(obj10);
+        linearTable.delete(obj6);
 
         System.out.println(linearTable.toString());
     }

@@ -5,6 +5,7 @@ public abstract class Hashtable {
     private int size = 0;
     private int m;
     private double loadFactor;
+    private double loadFactorTarget = 1;
 
     public Hashtable() {
         this.table = new HashObject[10];
@@ -68,6 +69,14 @@ public abstract class Hashtable {
 
     public int h2(Object key) {
         return (1 + positiveMod(key.hashCode(), m - 2));
+    }
+
+    public void setTargetLoadFactor(double lf) {
+        this.loadFactorTarget = lf;
+    }
+
+    public double getTargetLoadFactor() {
+        return loadFactorTarget;
     }
 
     public String toString() {

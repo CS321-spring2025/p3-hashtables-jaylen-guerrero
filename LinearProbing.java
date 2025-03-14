@@ -1,7 +1,5 @@
 public class LinearProbing extends Hashtable{
 
-    private double loadFactorTarget = 1;
-
     public LinearProbing() {
         super();
     }
@@ -11,7 +9,6 @@ public class LinearProbing extends Hashtable{
     }
 
     public HashObject search(HashObject obj) {
-        // int pos = h1(obj.getKey());
         int current = 0;
         for (int i = 0; i < getM(); i++) {
             current = (h1(obj.getKey()) + i) % getM();
@@ -26,7 +23,7 @@ public class LinearProbing extends Hashtable{
     }
 
     public void insert(HashObject obj) {
-        if (getLoadFactor() >= loadFactorTarget) { // Hash table is full
+        if (getLoadFactor() >= getTargetLoadFactor()) { // Hash table is full
             rehashTable();
         }
         int current = 0;
@@ -80,9 +77,7 @@ public class LinearProbing extends Hashtable{
         
     }
 
-    public void setTargetLoadFactor(double lf) {
-        this.loadFactorTarget = lf;
-    }
+    
     
     public void delete(HashObject obj) {
         int pos = h1(obj.getKey());
@@ -91,7 +86,7 @@ public class LinearProbing extends Hashtable{
             for (int i = 0; i < getM(); i++) {
                 current = (pos + i) % getM();
                 if (table[current] != null && table[current].equals(obj)) {
-                    // table[current] = null;
+                    table[current] = new HashObject(null);
                     table[current].setState(HashObject.State.DELETED);
                     decrementSize();
                     return;
