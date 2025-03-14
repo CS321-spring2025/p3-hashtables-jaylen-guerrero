@@ -38,7 +38,8 @@ public class DoubleHashing  extends Hashtable{
                 return;
             } else if (table[current] != null && table[current].getState() == HashObject.State.OCCUPIED && table[current].equals(obj)) {
                 table[current].incrementFrequency();
-                incrementSize();
+                table[current].incrementProbe();
+                incrementDupe();
                 return;
             }
         }
@@ -92,8 +93,8 @@ public class DoubleHashing  extends Hashtable{
         calcProbes();
         System.out.println("\tUsing Double Hashing");
         System.out.println("HashtableExperiment: size of hash table is " + getM());
-        System.out.println("\tInserted " + getSize() + " elements, of which " +  getDupes() + " were duplicates");
-        System.out.println("\tAvg. no. of probes = " + format.format((1.0 * getProbeCount())/getSize()));
+        System.out.println("\tInserted " + (getSize() + getDupes()) + " elements, of which " +  getDupes() + " were duplicates");
+        System.out.println("\tAvg. no. of probes = " + format.format((1.0 * getProbeCount())/(getSize() + getDupes())));
 
     }
 

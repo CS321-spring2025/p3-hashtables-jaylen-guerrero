@@ -62,9 +62,6 @@ public class HashtableExperiment {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-
-
         }
 
     }
