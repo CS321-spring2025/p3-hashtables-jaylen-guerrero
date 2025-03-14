@@ -26,14 +26,14 @@ public class LinearProbing extends Hashtable{
     }
 
     public void insert(HashObject obj) {
-        if (getLoadFactor() > LOAD_FACTOR) { // Hash table is full
+        if (getLoadFactor() >= LOAD_FACTOR) { // Hash table is full
             rehashTable();
         }
         int current = 0;
         for (int i = 0; i < getM(); i++) {
             current = (h1(obj.getKey()) + i) % getM();
             obj.incrementProbe();
-            if (table[current].equals(obj)) {
+            if (table[current] != null && table[current].equals(obj)) {
                 table[current].incrementFrequency();
                 return;
             }
@@ -51,22 +51,32 @@ public class LinearProbing extends Hashtable{
 
     private void rehashTable() {
         HashObject[] newTable = new HashObject[table.length * 2];
+        for (int i = 0; i < newTable.length; i++) {
+            newTable[i] = new HashObject(null);
+            newTable[i].setState(HashObject.State.EMPTY);
+        }
         int current;
+        setM(newTable.length);
         for (int i = 0; i < table.length; i++) {
-            if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
-                for (int j = 0; j < newTable.length; j++) {
-                    current = (h1(table[i].getKey()) + j) % (newTable.length);
-                    if (newTable[current] == null ) {
-                        newTable[current] = table[i];
-                        newTable[current].setState(HashObject.State.OCCUPIED);
-                        break;
+                if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
+                    for (int j = 0; j < newTable.length; j++) {
+                        current = (h1(table[i].getKey()) + j) % (newTable.length);
+                        if (!(newTable[current].equals(table[i]))) { // if obj is already in new table
+                            if (newTable[current].getState() == HashObject.State.EMPTY || newTable[current].getState() == HashObject.State.DELETED) {
+                                newTable[current] = table[i];
+                                newTable[current].setState(HashObject.State.OCCUPIED);
+                                break;
+                            }
+                        } else {
+                            newTable[current].incrementFrequency();
+                            break;
+                        }
                     }
+                    
                 }
-                
-            }
         }
         table = newTable;
-        setM(newTable.length);
+        
         
     }
     
@@ -90,12 +100,17 @@ public class LinearProbing extends Hashtable{
     public String toString() {
         String s = "";
         for (int i = 0; i < getM(); i++) {
-            if (table[i].getState() != HashObject.State.DELETED || table[i].getState() != HashObject.State.EMPTY) {
-                s = s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\tProbe count: " + table[i].probeCount + "\tFrequency Count: " + table[i].frequencyCount + "\n");
+            if (table[i] != null) {
+                if (table[i].getState() != HashObject.State.DELETED || table[i].getState() != HashObject.State.EMPTY) {
+                    s = s.concat("Index: " + i + "\tValue: " + table[i].getKey() + "\tProbe count: " + table[i].probeCount + "\tFrequency Count: " + table[i].frequencyCount + "\n");
+                } else {
+                    s = s.concat("Index: " + i + "\tValue: null\n");
+                }
             } else {
                 s = s.concat("Index: " + i + "\tValue: null\n");
             }
-        }
+            
+            }
         return s;
     }
 

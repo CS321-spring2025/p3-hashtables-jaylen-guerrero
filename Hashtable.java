@@ -6,6 +6,7 @@ public abstract class Hashtable {
     protected HashObject[] table;
     private int size = 0;
     private int m;
+    private double loadFactor;
 
     public Hashtable() {
         this.table = new HashObject[10];
@@ -59,7 +60,8 @@ public abstract class Hashtable {
     }
 
     public double getLoadFactor() {
-        return (size/((double)m));
+        this.loadFactor = (1.0 * getSize())/(getM());
+        return loadFactor;
     }
 
     public int getSize() {
