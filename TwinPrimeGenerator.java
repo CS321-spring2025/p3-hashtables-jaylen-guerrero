@@ -1,50 +1,40 @@
-/**
- * Author: GeeksforGeeks.org
- * From https://www.geeksforgeeks.org/twin-prime-numbers-between-1-and-n/
- */
 public class TwinPrimeGenerator {
- 
-    static void printTwinPrime(int n)
-    {
-        // Create a boolean array "prime[0..n]" 
-        // and initialize all entries it as 
-        // true. A value in prime[i] will
-        // finally be false if i is Not a 
-        // prime, else true.
-        boolean prime[] = new boolean[n + 1];
-         
-        for (int i = 0; i <= n; i++)
-            prime[i] = true;
- 
-        for (int p = 2; p * p <= n; p++) {
-             
-            // If prime[p] is not changed,
-            // then it is a prime
-            if (prime[p] == true) {
-                 
-                // Update all multiples of p
-                for (int i = p * 2; i <= n; i += p)
-                    prime[i] = false;
+
+    // Public static method to generate twin primes within a range [min, max]
+    public static int generateTwinPrime(int min, int max) {
+        // Iterate through the range to find the twin primes
+        for (int i = min; i <= max - 2; i++) {
+            if (isPrime(i) && isPrime(i + 2)) {
+                return i + 2;  // Return the larger prime (i + 2)
             }
         }
- 
-        // to check for twin prime numbers
-        // display th twin prime
-        for (int i = 2; i <= n - 2; i++) {
- 
-            if (prime[i] == true &&
-                prime[i + 2] == true)
-             
-                // Display the result
-                System.out.print(" (" + i + ", " +
-                                   (i + 2) + ")");
-        }
+        return -1;  // Return -1 if no twin primes found in the range
     }
- 
-    // Driver Program to test above function
-    public static void main(String args[])
-    {
-        int n = 25;
-        printTwinPrime(n);
+
+    // Helper method to check if a number is prime
+    private static boolean isPrime(int num) {
+        if (num <= 1) return false; // 0 and 1 are not primes
+        if (num == 2) return true; // 2 is a prime
+        if (num % 2 == 0) return false; // Exclude even numbers greater than 2
+
+        // Check divisibility for odd numbers up to sqrt(num)
+        for (int i = 3; i * i <= num; i += 2) {
+            if (num % i == 0) return false; // Found a divisor, not prime
+        }
+
+        return true;  // Number is prime
+    }
+
+    // Main method to test the functionality
+    public static void main(String[] args) {
+        int min = 95500;
+        int max = 96000;
+        int twinPrime = generateTwinPrime(min, max);
+
+        if (twinPrime != -1) {
+            System.out.println("The larger twin prime in the range [" + min + ", " + max + "] is: " + twinPrime);
+        } else {
+            System.out.println("No twin primes found in the range [" + min + ", " + max + "]");
+        }
     }
 }
