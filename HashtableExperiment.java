@@ -6,11 +6,13 @@ import java.util.Scanner;
 
 public class HashtableExperiment {
 
-    final static int MAX_ELEMENTS = 100;
+    
     TwinPrimeGenerator primeGen = new TwinPrimeGenerator();
-    static int m = 160;//TwinPrimeGenerator.generateTwinPrime(95500, 96000);
+    static int m = TwinPrimeGenerator.generateTwinPrime(95500, 96000);
+    static int MAX_ELEMENTS = 200000;
     static LinearProbing linear = new LinearProbing(m);
     static DoubleHashing doubleHash = new DoubleHashing(m);
+
     public static void printUsage() {
         System.err.println("Usage: java HashtableExperiment <dataSource> <loadFactor> [<debugLevel>]");
         System.err.println("<dataSource>: 1 ==> random numbers");
@@ -24,7 +26,9 @@ public class HashtableExperiment {
 
     public static void dataSource(int source, long seed) {
         Random gen = new Random(seed);
-        int amount = MAX_ELEMENTS;//gen.nextInt(MAX_ELEMENTS);
+        
+        int amount = Math.abs((gen.nextInt(MAX_ELEMENTS)));
+
         HashObject obj, dobj;
         int cur;
         
@@ -77,9 +81,10 @@ public class HashtableExperiment {
             System.exit(1);
         }
         int dataSource = Integer.parseInt(args[0]);
+        int debugLevel = -1;
         double loadFactor = Double.parseDouble(args[1]);
         if (args.length == 3) {
-            int debugLevel = Integer.parseInt(args[2]);
+            debugLevel = Integer.parseInt(args[2]);
             if (debugLevel < 0 || debugLevel > 2) {
                 printUsage();
                 System.exit(1);
@@ -97,11 +102,14 @@ public class HashtableExperiment {
         linear.setTargetLoadFactor(loadFactor);
         doubleHash.setTargetLoadFactor(loadFactor);
 
-        dataSource(dataSource, 0);
+        dataSource(dataSource);
 
-        linear.debug0();
-        System.out.println();
-        doubleHash.debug0();
+        if (debugLevel != -1 && debugLevel == 0) { // debug 0
+            System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
+            linear.debug0();
+            System.out.println();
+            doubleHash.debug0();
+        }
 
     }
 }
