@@ -104,11 +104,23 @@ public class HashtableExperiment {
 
         dataSource(dataSource, n);
 
-        if (debugLevel != -1 && debugLevel == 0) { // debug 0
+        if (debugLevel != -1) {
+            if (debugLevel == 0) { // debug 0
+                System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
+                linear.debug0();
+                System.out.println();
+                doubleHash.debug0();
+            } else if (debugLevel == 1) {
+                System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
+                linear.debug1();
+                System.out.println();
+                doubleHash.debug1();
+            }
+        } else {
             System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
-            linear.debug0();
-            System.out.println();
-            doubleHash.debug0();
+                linear.debug0();
+                System.out.println();
+                doubleHash.debug0();
         }
 
     }

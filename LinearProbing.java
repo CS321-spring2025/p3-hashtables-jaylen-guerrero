@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class LinearProbing extends Hashtable{
 
     public LinearProbing() {
@@ -105,6 +108,21 @@ public class LinearProbing extends Hashtable{
         System.out.println("\tInserted " + (getSize() + getDupes()) + " elements, of which " +  getDupes() + " were duplicates");
         System.out.println("\tAvg. no. of probes = " + format.format((1.0 * getProbeCount())/(getSize() + getDupes())));
 
+    }
+
+    public void debug1() {
+        debug0();
+        System.out.println("HashtableExperiment: Saved dump of hash table");
+        try (FileWriter write = new FileWriter("linear-dump.txt")) {
+            for (int i = 0; i < getM(); i++) {
+                if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
+                    write.write("table[" + i + "]: " + table[i].getKey() + " " + table[i].frequencyCount + " " + table[i].probeCount + "\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
 }
