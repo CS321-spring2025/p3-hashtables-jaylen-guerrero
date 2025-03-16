@@ -118,7 +118,7 @@ public class HashtableExperiment {
         int n = (int)Math.ceil(loadFactor * m);
 
 
-        dataSource(dataSource, n, debugLevel, 0);
+        dataSource(dataSource, n, debugLevel);
 
         if (debugLevel != -1) {
             if (debugLevel == 0) { // debug 0
