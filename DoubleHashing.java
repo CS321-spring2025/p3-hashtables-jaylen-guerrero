@@ -28,7 +28,8 @@ public class DoubleHashing  extends Hashtable{
             rehashTable();
         }
         for (int i = 0; i < getM(); i++) {
-            current = ((h1(obj.getKey())) + (i * h2(obj.getKey()))) % getM();
+            long temp = ((h1(obj.getKey())) + (i * h2(obj.getKey())));
+            current = (int)temp % getM();
             obj.incrementProbe();
             if (table[current] != null && (table[current].getState() == HashObject.State.EMPTY || table[current].getState() == HashObject.State.DELETED)) {
                 table[current] = obj;
@@ -72,7 +73,8 @@ public class DoubleHashing  extends Hashtable{
         for (int i = 0; i < table.length; i++) {
             if (table[i] != null && table[i].getState() == HashObject.State.OCCUPIED) {
                 for (int j = 0; j < newTable.length; j++) {
-                    current = (h1(table[i].getKey()) + (j * h2(table[i].getKey()))) % (getM());
+                    long temp = (h1(table[i].getKey()) + (j * h2(table[i].getKey())));
+                    current = (int)temp % getM();
                     if (newTable[current].getState() == HashObject.State.EMPTY || newTable[current].getState() == HashObject.State.DELETED) {
                         newTable[current] = table[i];
                         newTable[current].setState(HashObject.State.OCCUPIED);

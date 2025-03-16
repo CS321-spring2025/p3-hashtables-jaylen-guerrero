@@ -9,7 +9,6 @@ public class HashtableExperiment {
     
     TwinPrimeGenerator primeGen = new TwinPrimeGenerator();
     static int m = TwinPrimeGenerator.generateTwinPrime(95500, 96000);
-    static int MAX_ELEMENTS = 200000;
     static LinearProbing linear = new LinearProbing(m);
     static DoubleHashing doubleHash = new DoubleHashing(m);
 
@@ -24,16 +23,14 @@ public class HashtableExperiment {
         System.err.println("\t2 ==> print debugging output for each insert");
     }
 
-    public static void dataSource(int source, long seed) {
+    public static void dataSource(int source, int n, long seed) {
         Random gen = new Random(seed);
-        
-        int amount = Math.abs((gen.nextInt(MAX_ELEMENTS)));
 
         HashObject obj, dobj;
         int cur;
         
         if (source == 1) { //  data source 1
-            for (int i = 0; i < amount; i++) {
+            for (int i = 0; i < n; i++) {
                 cur = gen.nextInt();
                 dobj = new HashObject(cur);
                 obj = new HashObject(cur);
@@ -43,7 +40,7 @@ public class HashtableExperiment {
 
         } else if (source == 2) { // data source 2
             long current = System.currentTimeMillis();
-            for (int i = 0; i < amount; i++) {
+            for (int i = 0; i < n; i++) {
                 current += 1000;
                 Date date = new Date(current);
                 obj = new HashObject(date);
@@ -56,7 +53,7 @@ public class HashtableExperiment {
             String filePath = "word-list.txt";
             String curString;
             try (Scanner scan = new Scanner(new File(filePath))) {
-                for (int i = 0; i < amount; i++) {
+                for (int i = 0; i < n; i++) {
                     curString = scan.next();
                     obj = new HashObject(curString);
                     dobj = new HashObject(curString);
@@ -70,9 +67,10 @@ public class HashtableExperiment {
 
     }
 
-    public static void dataSource(int source) {
-        dataSource(source, System.currentTimeMillis());
+    public static void dataSource(int source, int size) {
+        dataSource(source, size, System.currentTimeMillis());
     }
+    
 
     public static void main(String[] args) {
         // Command line checks
@@ -101,8 +99,10 @@ public class HashtableExperiment {
 
         linear.setTargetLoadFactor(loadFactor);
         doubleHash.setTargetLoadFactor(loadFactor);
+        int n = (int)Math.ceil(loadFactor * m);
 
-        dataSource(dataSource);
+
+        dataSource(dataSource, n);
 
         if (debugLevel != -1 && debugLevel == 0) { // debug 0
             System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
