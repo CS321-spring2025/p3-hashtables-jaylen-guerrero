@@ -29,6 +29,10 @@ public class LinearProbing extends Hashtable{
         if (getLoadFactor() >= getTargetLoadFactor()) { // Hash table is full
             rehashTable();
         }
+        if (search(obj) != null) {
+            search(obj).incrementFrequency();
+            return;
+        }
         int current = 0;
         for (int i = 0; i < getM(); i++) {
             current = (h1(obj.getKey()) + i) % getM();

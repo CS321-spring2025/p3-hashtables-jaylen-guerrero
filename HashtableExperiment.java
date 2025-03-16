@@ -62,7 +62,7 @@ public class HashtableExperiment {
             String curString;
             try (Scanner scan = new Scanner(new File(filePath))) {
                 for (int i = 0; i < n; i++) {
-                    curString = scan.next();
+                    curString = scan.nextLine();
                     obj = new HashObject(curString);
                     dobj = new HashObject(curString);
                     if (debug == 2) {
@@ -74,7 +74,7 @@ public class HashtableExperiment {
                     while (linear.search(obj) != null) {
                         linear.insert(obj);
                         doubleHash.insert(dobj);
-                        curString = scan.next();
+                        curString = scan.nextLine();
                         obj = new HashObject(curString);
                         dobj = new HashObject(curString);
                     } 
