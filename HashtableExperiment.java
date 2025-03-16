@@ -69,8 +69,20 @@ public class HashtableExperiment {
                         linear.debug2(obj, i);
                         doubleHash.debug2(dobj, i);
                     }
+                    
+                    
+                    while (linear.search(obj) != null) {
+                        linear.insert(obj);
+                        doubleHash.insert(dobj);
+                        curString = scan.next();
+                        obj = new HashObject(curString);
+                        dobj = new HashObject(curString);
+                    } 
                     linear.insert(obj);
                     doubleHash.insert(dobj);
+                  
+
+
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

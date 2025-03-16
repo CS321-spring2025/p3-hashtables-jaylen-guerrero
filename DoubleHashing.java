@@ -30,6 +30,10 @@ public class DoubleHashing  extends Hashtable{
         if (getLoadFactor() >= getTargetLoadFactor()) {
             rehashTable();
         }
+        if (search(obj) != null) {
+            search(obj).incrementFrequency();
+            return;
+        }
         for (int i = 0; i < getM(); i++) {
             long temp = ((h1(obj.getKey())) + (i * h2(obj.getKey())));
             current = (int)temp % getM();
