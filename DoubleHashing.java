@@ -117,6 +117,16 @@ public class DoubleHashing  extends Hashtable{
         }
         
     }
+    
+    public void debug2(HashObject obj, int i) {
+        System.out.print("Double Hash:\t");
+        System.out.print("Item no: " + i + "\n");
+        if (search(obj) != null) { // object will be a duplicate
+            System.out.println("\"" + obj + "\" Object is a duplicate - will not be inserted");
+        } else {
+            System.out.println("\"" + obj + "\" Object will be inserted into table - first instance of object in table");
+        }
+    }
 
     
     

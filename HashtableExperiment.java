@@ -23,7 +23,7 @@ public class HashtableExperiment {
         System.err.println("\t2 ==> print debugging output for each insert");
     }
 
-    public static void dataSource(int source, int n, long seed) {
+    public static void dataSource(int source, int n, int debug, long seed) {
         Random gen = new Random(seed);
 
         HashObject obj, dobj;
@@ -34,6 +34,10 @@ public class HashtableExperiment {
                 cur = gen.nextInt();
                 dobj = new HashObject(cur);
                 obj = new HashObject(cur);
+                if (debug == 2) {
+                    linear.debug2(obj, i);
+                    doubleHash.debug2(dobj, i);
+                }
                 linear.insert(obj);
                 doubleHash.insert(dobj);
             }
@@ -45,6 +49,10 @@ public class HashtableExperiment {
                 Date date = new Date(current);
                 obj = new HashObject(date);
                 dobj = new HashObject(date);
+                if (debug == 2) {
+                    linear.debug2(obj, i);
+                    doubleHash.debug2(dobj, i);
+                }
                 linear.insert(obj);
                 doubleHash.insert(dobj);
             }
@@ -57,6 +65,10 @@ public class HashtableExperiment {
                     curString = scan.next();
                     obj = new HashObject(curString);
                     dobj = new HashObject(curString);
+                    if (debug == 2) {
+                        linear.debug2(obj, i);
+                        doubleHash.debug2(dobj, i);
+                    }
                     linear.insert(obj);
                     doubleHash.insert(dobj);
                 }
@@ -68,7 +80,11 @@ public class HashtableExperiment {
     }
 
     public static void dataSource(int source, int size) {
-        dataSource(source, size, System.currentTimeMillis());
+        dataSource(source, size, 0, System.currentTimeMillis());
+    }
+
+    public static void dataSource(int source, int n, int debug) {
+        dataSource(source, n, debug, System.currentTimeMillis());
     }
     
 
@@ -102,7 +118,7 @@ public class HashtableExperiment {
         int n = (int)Math.ceil(loadFactor * m);
 
 
-        dataSource(dataSource, n);
+        dataSource(dataSource, n, debugLevel);
 
         if (debugLevel != -1) {
             if (debugLevel == 0) { // debug 0
@@ -115,6 +131,8 @@ public class HashtableExperiment {
                 linear.debug1();
                 System.out.println();
                 doubleHash.debug1();
+            } else if (debugLevel == 2) {
+
             }
         } else {
             System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
