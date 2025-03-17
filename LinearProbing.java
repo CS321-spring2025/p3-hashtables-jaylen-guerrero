@@ -1,19 +1,37 @@
+/**
+ * Author: Jaylen Guerrero
+ * Date: 03/17/2025
+ * Description: This LinearProbing class will implement a hash table that uses linear probing to insert and search for elements. It extends hashtable which creates the table itself.
+ */
+
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class LinearProbing extends Hashtable{
 
+    /**
+     * LinearProbing - default constructor that will create a hashtable of size 10
+     */
     public LinearProbing() {
         super();
     }
 
+    /**
+     * LinearProbing - default constructor that will create a hashtable with a size of size
+     * @param size Size of hashtable to be created
+     */
     public LinearProbing(int size) {
         super(size);
     }
 
+    /**
+     * search - will search for an element in the table
+     * @param obj Object to be searched for
+     * @return HashObject, will return the obj if found in the table, null otherwise
+     */
     public HashObject search(HashObject obj) {
         int current = 0;
-        for (int i = 0; i < getM(); i++) {
+        for (int i = 0; i < getM(); i++) { // Iterate through table if needed
             current = (h1(obj.getKey()) + i) % getM();
             if (table[current] != null && (table[current].equals(obj)) && table[current].getState() != HashObject.State.DELETED) {
                 return table[current];
@@ -25,26 +43,25 @@ public class LinearProbing extends Hashtable{
 
     }
 
+    /**
+     * insert - will insert an obj into a hashtable. If object is already in the table, the frequencyCount will be increased and object will not be put into table
+     * @param obj Object to be inserted into table
+     */
     public void insert(HashObject obj) {
-        if (getLoadFactor() >= getTargetLoadFactor()) { // Hash table is full
+        if (getLoadFactor() >= getTargetLoadFactor()) { // Hash table is full according to load factor
             rehashTable();
-        }
-        if (search(obj) != null) {
-            search(obj).incrementFrequency();
-            return;
         }
         int current = 0;
         for (int i = 0; i < getM(); i++) {
             current = (h1(obj.getKey()) + i) % getM();
             obj.incrementProbe();
-            if (table[current] != null && table[current].equals(obj)) {
+            if (table[current] != null && table[current].equals(obj)) { // Check if obj is in table
                 table[current].incrementFrequency();
-                table[current].incrementProbe();
                 incrementDupe();
                 return;
             }
             if (table[current] != null) {
-                if ((table[current].getState() == HashObject.State.EMPTY) || table[current].getState() == HashObject.State.DELETED) {
+                if ((table[current].getState() == HashObject.State.EMPTY) || table[current].getState() == HashObject.State.DELETED) { // Found an empty slot ot insert obj
                     table[current] = obj;
                     table[current].setState(HashObject.State.OCCUPIED);
                     obj.incrementFrequency();
@@ -55,6 +72,10 @@ public class LinearProbing extends Hashtable{
         }
     } 
 
+    /**
+     * rehashTable - private helper method that will rehash the elements in the table becasue the load factor has been reached
+     * Will create a new table with twice the size of the current table and assign new values and reassign the old table with the new copy
+     */
     private void rehashTable() {
         HashObject[] newTable = new HashObject[table.length * 2];
         for (int i = 0; i < newTable.length; i++) {
@@ -84,10 +105,12 @@ public class LinearProbing extends Hashtable{
         table = newTable;
         
         
-    }
-
+    }  
     
-    
+    /**
+     * delete - will delete an object from the table
+     * @param obj Object to be deleted from the table
+     */
     public void delete(HashObject obj) {
         int pos = h1(obj.getKey());
         int current = 0;
@@ -105,6 +128,9 @@ public class LinearProbing extends Hashtable{
         }
     }
 
+    /**
+     * debug0 - will print out the debug stats of the hashtable
+     */
     public void debug0() {
         calcProbes();
         System.out.println("\tUsing Linear Probing");
@@ -114,6 +140,9 @@ public class LinearProbing extends Hashtable{
 
     }
 
+    /**
+     * debug1 - will print out the debug stats of the hashtable and save it to a file
+     */
     public void debug1() {
         debug0();
         System.out.println("HashtableExperiment: Saved dump of hash table");
@@ -129,6 +158,9 @@ public class LinearProbing extends Hashtable{
         
     }
 
+    /**
+     * debug2 - will print out a detailed version of the entire hashtable
+     */
     public void debug2(HashObject obj, int i) {
         System.out.print("Linear Probe:\t");
         System.out.print("Item no: " + i + "\n");

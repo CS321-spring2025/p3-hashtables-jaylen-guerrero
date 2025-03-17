@@ -12,7 +12,7 @@ public class HashtableExperiment {
     static LinearProbing linear = new LinearProbing(m);
     static DoubleHashing doubleHash = new DoubleHashing(m);
 
-    public static void printUsage() {
+    private static void printUsage() {
         System.err.println("Usage: java HashtableExperiment <dataSource> <loadFactor> [<debugLevel>]");
         System.err.println("<dataSource>: 1 ==> random numbers");
         System.err.println("\t2 ==> date value as a long");
@@ -23,7 +23,7 @@ public class HashtableExperiment {
         System.err.println("\t2 ==> print debugging output for each insert");
     }
 
-    public static void dataSource(int source, int n, int debug, long seed) {
+    private static void dataSource(int source, int n, int debug, long seed) {
         Random gen = new Random(seed);
 
         HashObject obj, dobj;
@@ -91,47 +91,15 @@ public class HashtableExperiment {
 
     }
 
-    public static void dataSource(int source, int size) {
+    private static void dataSource(int source, int size) {
         dataSource(source, size, 0, System.currentTimeMillis());
     }
 
-    public static void dataSource(int source, int n, int debug) {
+    private static void dataSource(int source, int n, int debug) {
         dataSource(source, n, debug, System.currentTimeMillis());
     }
-    
 
-    public static void main(String[] args) {
-        // Command line checks
-        if (args.length < 2 || args.length > 3) {
-            printUsage();
-            System.exit(1);
-        }
-        int dataSource = Integer.parseInt(args[0]);
-        int debugLevel = -1;
-        double loadFactor = Double.parseDouble(args[1]);
-        if (args.length == 3) {
-            debugLevel = Integer.parseInt(args[2]);
-            if (debugLevel < 0 || debugLevel > 2) {
-                printUsage();
-                System.exit(1);
-            }
-        }
-        if (dataSource < 1 || dataSource > 3) {
-            printUsage();
-            System.exit(1);
-        }
-        if (loadFactor < 0 || loadFactor > 1) {
-            printUsage();
-            System.exit(1);
-        }
-
-        linear.setTargetLoadFactor(loadFactor);
-        doubleHash.setTargetLoadFactor(loadFactor);
-        int n = (int)Math.ceil(loadFactor * m);
-
-
-        dataSource(dataSource, n, debugLevel);
-
+    private static void checkDebug(int debugLevel) {
         if (debugLevel != -1) {
             if (debugLevel == 0) { // debug 0
                 System.out.println("HashtableExperiment: Found a twin prime for table capacity: " + m);
@@ -152,6 +120,44 @@ public class HashtableExperiment {
                 System.out.println();
                 doubleHash.debug0();
         }
+    }
 
+    public static void main(String[] args) {
+        // Command line checks
+        if (args.length < 2 || args.length > 3) {
+            printUsage();
+            System.exit(1);
+        }
+        // Parses arguments
+        int dataSource = Integer.parseInt(args[0]);
+        int debugLevel = -1;
+        double loadFactor = Double.parseDouble(args[1]);
+        if (args.length == 3) {
+            debugLevel = Integer.parseInt(args[2]);
+            if (debugLevel < 0 || debugLevel > 2) {
+                printUsage();
+                System.exit(1);
+            }
+        }
+        if (dataSource < 1 || dataSource > 3) {
+            printUsage();
+            System.exit(1);
+        }
+        if (loadFactor < 0 || loadFactor > 1) {
+            printUsage();
+            System.exit(1);
+        }
+
+        // Sets load factor for the experiment
+        linear.setTargetLoadFactor(loadFactor);
+        doubleHash.setTargetLoadFactor(loadFactor);
+        
+        // Sets amount of elements to be added accroding to load factor and table length
+        int n = (int)Math.ceil(loadFactor * m);
+
+        // Creates data source and puts into tables
+        dataSource(dataSource, n, debugLevel);
+        // Checks debug levels
+        checkDebug(debugLevel);
     }
 }
